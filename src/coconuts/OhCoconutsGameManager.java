@@ -14,6 +14,7 @@ public class OhCoconutsGameManager {
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
     private final int height, width;
     private final int DROP_INTERVAL = 10;
+    private final int MAX_AMMO = 20;
     private final int MAX_TIME = 100;
     private Pane gamePane;
     private Crab theCrab;
@@ -66,6 +67,14 @@ public class OhCoconutsGameManager {
         }
         gameTick++;
     }
+    public void tryShootingLaser() {
+        if (gameTick % MAX_AMMO == 0 && theCrab != null) {
+            LaserBeam l = new LaserBeam(this, theCrab.y, theCrab.x + theCrab.width/3);
+            registerObject(l);
+            gamePane.getChildren().add(l.getImageView());
+        }
+    }
+
 
     public Crab getCrab() {
         return theCrab;

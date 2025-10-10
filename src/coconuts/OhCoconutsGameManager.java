@@ -14,8 +14,13 @@ public class OhCoconutsGameManager {
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
     private final int height, width;
     private final int DROP_INTERVAL = 10;
-    private final int MAX_AMMO = 20;
+    private int LASER_INTERVAL = 0;
+    private final int LASER_COUNT = 15;
     private final int MAX_TIME = 100;
+    private int score = 0;
+    private int numCoconuts = 0;
+    private int numLasers = 0;
+    private double accuracy = 0.0;
     private Pane gamePane;
     private Crab theCrab;
     private Beach theBeach;
@@ -62,16 +67,19 @@ public class OhCoconutsGameManager {
         if (gameTick % DROP_INTERVAL == 0 && theCrab != null) {
             coconutsInFlight += 1;
             Coconut c = new Coconut(this, (int) (Math.random() * width));
+            numCoconuts += 1;
             registerObject(c);
             gamePane.getChildren().add(c.getImageView());
         }
         gameTick++;
     }
     public void tryShootingLaser() {
-        if (gameTick % MAX_AMMO == 0 && theCrab != null) {
+        if (theCrab != null && LASER_INTERVAL >= LASER_COUNT) {
             LaserBeam l = new LaserBeam(this, theCrab.y, theCrab.x + theCrab.width/3);
             registerObject(l);
+            numLasers += 1;
             gamePane.getChildren().add(l.getImageView());
+            LASER_INTERVAL = 0;
         }
     }
 
@@ -113,6 +121,7 @@ public class OhCoconutsGameManager {
             }
         }
         scheduledForRemoval.clear();
+        LASER_INTERVAL++;
     }
 
     public void scheduleForDeletion(IslandObject islandObject) {
@@ -122,4 +131,8 @@ public class OhCoconutsGameManager {
     public boolean done() {
         return coconutsInFlight == 0 && gameTick >= MAX_TIME;
     }
+    public void  printState() {
+        System.out.println("Score: " + score + " Coconuts: " + numCoconuts + " Lasers: " + numLasers + " Accuracy: " + accuracy);
+    }
+
 }

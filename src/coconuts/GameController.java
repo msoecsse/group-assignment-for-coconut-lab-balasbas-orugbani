@@ -54,7 +54,7 @@ public class GameController {
                 coconutTimeline.pause();
                 started = false;
             }
-        } else if(keyEvent.getCode() == KeyCode.ENTER) {
+        } else if(keyEvent.getCode() == KeyCode.UP) {
             theGame.tryShootingLaser();
         }
     }

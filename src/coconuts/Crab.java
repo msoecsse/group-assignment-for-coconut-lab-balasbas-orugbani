@@ -23,4 +23,14 @@ public class Crab extends HittableIslandObject {
         x += offset;
         display();
     }
+    
+    @Override
+    public boolean isGroundObject() {
+        return true;
+    }
+    
+    @Override
+    protected int hittable_height() {
+        return y; // top of crab
+    }
 }

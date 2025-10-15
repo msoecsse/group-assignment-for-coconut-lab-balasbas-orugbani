@@ -1,6 +1,7 @@
 package coconuts;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -22,12 +23,27 @@ public class GameController {
     private Pane gamePane;
     @FXML
     private Pane theBeach;
+    @FXML
+    private Pane scoreboardPane;
+    @FXML
+    private Label coconutsHitLabel;
+    @FXML
+    private Label coconutsMissedLabel;
+    @FXML
+    private Label accuracyLabel;
+    
     private OhCoconutsGameManager theGame;
 
     @FXML
     public void initialize() {
+        ScoreboardController scoreboardController = new ScoreboardController();
+        scoreboardController.coconutsHitLabel = this.coconutsHitLabel;
+        scoreboardController.coconutsMissedLabel = this.coconutsMissedLabel;
+        scoreboardController.accuracyLabel = this.accuracyLabel;
+        scoreboardController.initialize();
+        
         theGame = new OhCoconutsGameManager((int) (gamePane.getPrefHeight() - theBeach.getPrefHeight()),
-                (int) (gamePane.getPrefWidth()), gamePane);
+                (int) (gamePane.getPrefWidth()), gamePane, scoreboardController);
 
         gamePane.setFocusTraversable(true);
 

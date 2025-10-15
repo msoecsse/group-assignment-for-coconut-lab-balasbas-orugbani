@@ -11,4 +11,14 @@ public class Beach extends IslandObject {
 
     @Override
     public void step() { /* do nothing */ }
+    
+    @Override
+    public boolean isGroundObject() {
+        return true;
+    }
+    
+    @Override
+    protected int hittable_height() {
+        return y; // top of beach
+    }
 }

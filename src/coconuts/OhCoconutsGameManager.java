@@ -4,8 +4,10 @@ package coconuts;
 
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 // This class manages the game, including tracking all island objects and detecting when they hit
 public class OhCoconutsGameManager {
@@ -13,25 +15,27 @@ public class OhCoconutsGameManager {
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
     private final int height, width;
-    private final int DROP_INTERVAL = 10;
     private int LASER_INTERVAL = 0;
-    private final int LASER_COUNT = 15;
-    private final int MAX_TIME = 100;
-    private int score = 0;
     private int numCoconuts = 0;
     private int numLasers = 0;
-    private double accuracy = 0.0;
-    private Pane gamePane;
+    private final Pane gamePane;
     private Crab theCrab;
     private Beach theBeach;
-    /* game play */
     private int coconutsInFlight = 0;
     private int gameTick = 0;
 
-    public OhCoconutsGameManager(int height, int width, Pane gamePane) {
+    private final ScoreboardObserver scoreboardObserver;
+
+    public OhCoconutsGameManager(int height, int width, Pane gamePane, ScoreboardController scoreboardController) {
         this.height = height;
         this.width = width;
         this.gamePane = gamePane;
+        
+        List<Observer> observers = new ArrayList<>();
+        HitEvent hitEvent = new HitEvent(observers);
+        Scoreboard scoreboard = new Scoreboard();
+        this.scoreboardObserver = new ScoreboardObserver(scoreboard, hitEvent, scoreboardController);
+        hitEvent.attach(scoreboardObserver);
 
         this.theCrab = new Crab(this, height, width);
         registerObject(theCrab);
@@ -64,6 +68,7 @@ public class OhCoconutsGameManager {
     }
 
     public void tryDropCoconut() {
+        int DROP_INTERVAL = 10;
         if (gameTick % DROP_INTERVAL == 0 && theCrab != null) {
             coconutsInFlight += 1;
             Coconut c = new Coconut(this, (int) (Math.random() * width));
@@ -74,6 +79,7 @@ public class OhCoconutsGameManager {
         gameTick++;
     }
     public void tryShootingLaser() {
+        int LASER_COUNT = 10;
         if (theCrab != null && LASER_INTERVAL >= LASER_COUNT) {
             LaserBeam l = new LaserBeam(this, theCrab.y, theCrab.x + theCrab.width/3);
             registerObject(l);
@@ -97,14 +103,17 @@ public class OhCoconutsGameManager {
             o.step();
             o.display();
         }
-        // see if objects hit; the hit itself is something you will add
-        // you can't change the lists while processing them, so collect
-        //   items to be removed in the first pass and remove them later
+
         scheduledForRemoval.clear();
         for (IslandObject thisObj : allObjects) {
             for (HittableIslandObject hittableObject : hittableIslandSubjects) {
                 if (thisObj.canHit(hittableObject) && thisObj.isTouching(hittableObject)) {
-                    // TODO: add code here to process the hit
+                    boolean isCoconut = hittableObject.isFalling();
+                    boolean isLaser = thisObj instanceof LaserBeam;
+                    
+                    if (isLaser && isCoconut) {
+                        scoreboardObserver.update(true); // Coconut hit
+                    }
 
                     coconutDestroyed();
 
@@ -113,6 +122,16 @@ public class OhCoconutsGameManager {
                 }
             }
         }
+        
+        for (IslandObject thisObj : allObjects) {
+            if (thisObj.isFalling() && thisObj.isGroundObject()) {
+                scoreboardObserver.update(false); // Coconut missed
+                scheduledForRemoval.add(thisObj);
+                gamePane.getChildren().remove(thisObj.getImageView());
+                coconutDestroyed();
+            }
+        }
+        
         // actually remove the objects as needed
         for (IslandObject thisObj : scheduledForRemoval) {
             allObjects.remove(thisObj);
@@ -129,9 +148,12 @@ public class OhCoconutsGameManager {
     }
 
     public boolean done() {
+        int MAX_TIME = 100;
         return coconutsInFlight == 0 && gameTick >= MAX_TIME;
     }
     public void  printState() {
+        double accuracy = 0.0;
+        int score = 0;
         System.out.println("Score: " + score + " Coconuts: " + numCoconuts + " Lasers: " + numLasers + " Accuracy: " + accuracy);
     }
 

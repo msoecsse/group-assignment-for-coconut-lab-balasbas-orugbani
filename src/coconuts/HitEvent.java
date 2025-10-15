@@ -1,9 +1,5 @@
 package coconuts;
 
-import javafx.scene.image.Image;
-
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 // An abstraction of all objects that can be hit by another object

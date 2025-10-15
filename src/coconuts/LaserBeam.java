@@ -13,11 +13,36 @@ public class LaserBeam extends IslandObject {
     }
 
     public int hittable_height() {
-        return y + WIDTH;
+        return y; // top of laser
     }
 
     @Override
     public void step() {
         y -= 3;
+    }
+    
+    @Override
+    public boolean canHit(IslandObject other) {
+        return other.isFalling();
+    }
+    
+    @Override
+    public boolean isTouching(IslandObject other) {
+        if (!canHit(other)) {
+            return false;
+        }
+        
+        int laserTop = y;
+        int laserBottom = y + WIDTH;
+        int otherHeight = other.hittable_height();
+        
+        boolean verticalCollision = laserTop <= otherHeight && laserBottom >= otherHeight;
+        
+        int laserCenter = x + WIDTH / 2;
+        int otherLeft = other.x;
+        int otherRight = other.x + other.width;
+        boolean horizontalCollision = laserCenter >= otherLeft && laserCenter <= otherRight;
+        
+        return verticalCollision && horizontalCollision;
     }
 }

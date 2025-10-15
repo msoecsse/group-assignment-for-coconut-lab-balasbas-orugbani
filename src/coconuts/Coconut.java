@@ -16,4 +16,20 @@ public class Coconut extends HittableIslandObject {
     public void step() {
         y += 5;
     }
+    
+    @Override
+    public boolean isFalling() {
+        return true;
+    }
+    
+    @Override
+    public boolean isGroundObject() {
+        // Check if coconut has reached the beach (bottom of game area)
+        return y >= containingGame.getHeight();
+    }
+    
+    @Override
+    protected int hittable_height() {
+        return y + WIDTH; // bottom of coconut
+    }
 }

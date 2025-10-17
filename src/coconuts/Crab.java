@@ -38,4 +38,24 @@ public class Crab extends HittableIslandObject implements ObserverData{
     public void setState(boolean isHit) {
 
     }
+
+    @Override
+    public boolean isTouching(IslandObject other) {
+        if (!canHit(other)) {
+            return false;
+        }
+
+        int crabTop = y;
+        int crabBottom = y + WIDTH;
+        int otherHeight = other.hittable_height();
+
+        boolean verticalCollision = crabTop <= otherHeight && crabBottom >= otherHeight;
+
+        int crabCenter = x + WIDTH / 2;
+        int otherLeft = other.x;
+        int otherRight = other.x + other.width;
+        boolean horizontalCollision = crabCenter >= otherLeft && crabCenter <= otherRight;
+
+        return verticalCollision && horizontalCollision;
+    }
 }

@@ -23,6 +23,7 @@ public class OhCoconutsGameManager  {
     private Beach theBeach;
     private int coconutsInFlight = 0;
     private int gameTick = 0;
+    private boolean isCrabDead = false;
 
     private final ScoreboardObserver scoreboardObserver;
     private final CrabObserver crabObserver;
@@ -100,8 +101,7 @@ public class OhCoconutsGameManager  {
     }
 
     public void killCrab() {
-        theCrab = null;
-        gamePane.getChildren().remove(theCrab.getImageView());
+        isCrabDead = true;
     }
 
     public void advanceOneTick() {
@@ -121,15 +121,18 @@ public class OhCoconutsGameManager  {
                     if (isLaser && isCoconut) {
                         scoreboardObserver.update(true); // Coconut hit
                         coconutDestroyed();
+                        scheduledForRemoval.add(hittableObject);
+                        gamePane.getChildren().remove(hittableObject.getImageView());
                     }
 
                     if(isCrab && isCoconut) {
                         hitEvent.notifyObservers();
                         coconutDestroyed();
+                        scheduledForRemoval.add(hittableObject);
+                        gamePane.getChildren().remove(hittableObject.getImageView());
                     }
 
-                    scheduledForRemoval.add(hittableObject);
-                    gamePane.getChildren().remove(hittableObject.getImageView());
+
                 }
             }
         }
@@ -160,8 +163,9 @@ public class OhCoconutsGameManager  {
 
     public boolean done() {
         int MAX_TIME = 100;
-        return theCrab == null || coconutsInFlight == 0 && gameTick >= MAX_TIME;
+        return isCrabDead || coconutsInFlight == 0 && gameTick >= MAX_TIME;
     }
+
     public void printState() {
         double accuracy = 0.0;
         int score = 0;

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 // This class manages the game, including tracking all island objects and detecting when they hit
-public class OhCoconutsGameManager {
+public class OhCoconutsGameManager  {
     private final Collection<IslandObject> allObjects = new LinkedList<>();
     private final Collection<HittableIslandObject> hittableIslandSubjects = new LinkedList<>();
     private final Collection<IslandObject> scheduledForRemoval = new LinkedList<>();
@@ -25,6 +25,9 @@ public class OhCoconutsGameManager {
     private int gameTick = 0;
 
     private final ScoreboardObserver scoreboardObserver;
+    private final CrabObserver crabObserver;
+
+    HitEvent hitEvent;
 
     public OhCoconutsGameManager(int height, int width, Pane gamePane, ScoreboardController scoreboardController) {
         this.height = height;
@@ -32,14 +35,16 @@ public class OhCoconutsGameManager {
         this.gamePane = gamePane;
         
         List<Observer> observers = new ArrayList<>();
-        HitEvent hitEvent = new HitEvent(observers);
+        hitEvent = new HitEvent(observers);
         Scoreboard scoreboard = new Scoreboard();
         this.scoreboardObserver = new ScoreboardObserver(scoreboard, hitEvent, scoreboardController);
         hitEvent.attach(scoreboardObserver);
 
         this.theCrab = new Crab(this, height, width);
+        this.crabObserver = new CrabObserver(theCrab, hitEvent, this);
         registerObject(theCrab);
         gamePane.getChildren().add(theCrab.getImageView());
+        hitEvent.attach(crabObserver);
 
         this.theBeach = new Beach(this, height, width);
         registerObject(theBeach);
@@ -96,6 +101,7 @@ public class OhCoconutsGameManager {
 
     public void killCrab() {
         theCrab = null;
+        gamePane.getChildren().remove(theCrab.getImageView());
     }
 
     public void advanceOneTick() {
@@ -110,12 +116,17 @@ public class OhCoconutsGameManager {
                 if (thisObj.canHit(hittableObject) && thisObj.isTouching(hittableObject)) {
                     boolean isCoconut = hittableObject.isFalling();
                     boolean isLaser = thisObj instanceof LaserBeam;
-                    
+                    boolean isCrab = thisObj instanceof Crab;
+
                     if (isLaser && isCoconut) {
                         scoreboardObserver.update(true); // Coconut hit
+                        coconutDestroyed();
                     }
 
-                    coconutDestroyed();
+                    if(isCrab && isCoconut) {
+                        hitEvent.notifyObservers();
+                        coconutDestroyed();
+                    }
 
                     scheduledForRemoval.add(hittableObject);
                     gamePane.getChildren().remove(hittableObject.getImageView());
@@ -149,9 +160,9 @@ public class OhCoconutsGameManager {
 
     public boolean done() {
         int MAX_TIME = 100;
-        return coconutsInFlight == 0 && gameTick >= MAX_TIME;
+        return theCrab == null || coconutsInFlight == 0 && gameTick >= MAX_TIME;
     }
-    public void  printState() {
+    public void printState() {
         double accuracy = 0.0;
         int score = 0;
         System.out.println("Score: " + score + " Coconuts: " + numCoconuts + " Lasers: " + numLasers + " Accuracy: " + accuracy);

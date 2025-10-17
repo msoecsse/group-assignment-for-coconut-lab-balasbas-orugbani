@@ -6,18 +6,18 @@ import javafx.scene.control.Label;
 public class ScoreboardController {
     @FXML
     public Label coconutsHitLabel;
-    
+
     @FXML
     public Label coconutsMissedLabel;
-    
+
     @FXML
     public Label accuracyLabel;
-    
+
     @FXML
     public void initialize() {
         updateDisplay(new Scoreboard());
     }
-    
+
     public void updateDisplay(Scoreboard scoreboard) {
         if (coconutsHitLabel != null) {
             coconutsHitLabel.setText(String.valueOf(scoreboard.getCoconutsHit()));
@@ -30,4 +30,3 @@ public class ScoreboardController {
         }
     }
 }
-

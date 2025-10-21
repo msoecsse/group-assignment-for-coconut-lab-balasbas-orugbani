@@ -23,12 +23,12 @@ public class LaserBeam extends IslandObject {
     
     @Override
     public boolean canHit(IslandObject other) {
-        return other.isFalling();
+        return !other.isFalling();
     }
     
     @Override
     public boolean isTouching(IslandObject other) {
-        if (!canHit(other)) {
+        if (canHit(other)) {
             return false;
         }
         

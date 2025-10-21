@@ -22,9 +22,9 @@ public class HitEvent extends AbstractSubject{
     }
 
     @Override
-    public void notifyObservers() {
-        for(Observer observer : observers) {
-            observer.update(true);
+    public void notifyObservers(boolean isHit) {
+        for (Observer observer : observers) {
+            observer.update(isHit);
         }
     }
 }

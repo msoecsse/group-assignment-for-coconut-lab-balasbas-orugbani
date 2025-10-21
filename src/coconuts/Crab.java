@@ -25,6 +25,11 @@ public class Crab extends HittableIslandObject implements ObserverData{
     }
     
     @Override
+    public boolean canHit(IslandObject other) {
+        return !other.isFalling();
+    }
+    
+    @Override
     public boolean isGroundObject() {
         return true;
     }
@@ -41,7 +46,7 @@ public class Crab extends HittableIslandObject implements ObserverData{
 
     @Override
     public boolean isTouching(IslandObject other) {
-        if (!canHit(other)) {
+        if (canHit(other)) {
             return false;
         }
 

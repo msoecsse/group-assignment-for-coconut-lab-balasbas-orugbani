@@ -17,4 +17,10 @@ public class ScoreboardObserver extends AbstractObserver {
             Platform.runLater(() -> controller.updateDisplay(scoreboard));
         }
     }
+
+    public void refreshDisplay() {
+        if (controller != null && observerData instanceof Scoreboard scoreboard) {
+            Platform.runLater(() -> controller.updateDisplay(scoreboard));
+        }
+    }
 }

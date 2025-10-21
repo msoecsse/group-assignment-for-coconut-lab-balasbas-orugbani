@@ -26,10 +26,6 @@ public class Scoreboard implements ObserverData {
         return coconutsMissed;
     }
 
-    public int getTotalCoconuts() {
-        return totalCoconuts;
-    }
-
     public double getAccuracy() {
         if (totalCoconuts == 0) {
             return 0.0;

@@ -30,6 +30,6 @@ public class Coconut extends HittableIslandObject {
     
     @Override
     protected int hittable_height() {
-        return y + WIDTH; // bottom of coconut
+        return y + WIDTH;
     }
 }

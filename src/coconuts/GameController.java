@@ -47,7 +47,7 @@ public class GameController {
 
         gamePane.setFocusTraversable(true);
 
-        coconutTimeline = new Timeline(new KeyFrame(Duration.millis(MILLISECONDS_PER_STEP), (e) -> {
+        coconutTimeline = new Timeline(new KeyFrame(Duration.millis(MILLISECONDS_PER_STEP), _ -> {
             theGame.tryDropCoconut();
             theGame.advanceOneTick();
             if (theGame.done())
@@ -63,7 +63,14 @@ public class GameController {
         } else if (keyEvent.getCode() == KeyCode.LEFT && !theGame.done()) {
             theGame.getCrab().crawl(-10);
         } else if (keyEvent.getCode() == KeyCode.SPACE) {
-            if (!started) {
+            // If game is done, reset and restart
+            if (theGame.done()) {
+                theGame.reset();
+                coconutTimeline.play();
+                started = true;
+            } 
+            // Otherwise, toggle pause/resume
+            else if (!started) {
                 coconutTimeline.play();
                 started = true;
             } else {
@@ -73,8 +80,5 @@ public class GameController {
         } else if(keyEvent.getCode() == KeyCode.UP) {
             theGame.tryShootingLaser();
         }
-    }
-    public void removeCrab() {
-
     }
 }

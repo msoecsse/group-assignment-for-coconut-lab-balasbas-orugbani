@@ -9,7 +9,10 @@ public class CrabObserver extends AbstractObserver{
 
     @Override
     public void update(boolean isHit) {
-        observerData.setState(isHit);
-        game.killCrab();
+        if (isHit) {
+            observerData.setState(isHit);
+            game.killCrab();
+            abstractSubject.detach(this);
+        }
     }
 }

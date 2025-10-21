@@ -67,7 +67,7 @@
         <Pane id="theGame" fx:id="gamePane" prefHeight="550.0" prefWidth="600.0"
               style="-fx-background-color: linear-gradient(to bottom right, derive(skyblue, 20%), derive(skyblue, -40%));">
             <Label layoutX="50.0" layoutY="520.0" scaleZ="2.0"
-                   text="Press arrow keys to move, UP to shoot, SPACE to start/pause"
+                   text="Press arrow keys to move, UP to shoot, SPACE to start/pause/reset"
                    textFill="darkred" translateZ="1.0">
                 <font>
                     <Font name="Poor Richard" size="14.0"/>

@@ -8,7 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * Course SWE2410-121
+ * Fall 2025-2026
+ * Class OhCoconutsGameManager Purpose: Logic manager for OhCoconuts game
+ *
+ * @author John Balasbas & Peli Orugbani
+ * @version created on 10/09/2025 11:30 AM
+ */
 // This class manages the game, including tracking all island objects and detecting when they hit
 public class OhCoconutsGameManager {
     private final Collection<IslandObject> allObjects = new LinkedList<>();

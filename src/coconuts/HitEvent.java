@@ -1,7 +1,14 @@
 package coconuts;
 
 import java.util.List;
-
+/**
+ * Course SWE2410-121
+ * Fall 2025-2026
+ * Class HitEvent Purpose: An subject class for hit events
+ *
+ * @author Peli Orugbani
+ * @version created on 10/09/2025 11:30 AM
+ */
 // An abstraction of all objects that can be hit by another object
 // This captures the Subject side of the Observer pattern; observers of the hit event will take action
 //   to process that event

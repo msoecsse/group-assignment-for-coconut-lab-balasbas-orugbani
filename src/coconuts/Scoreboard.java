@@ -1,5 +1,12 @@
 package coconuts;
-
+/**
+ * Course SWE2410-121
+ * Fall 2025-2026
+ * Class Scoreboard Purpose: Scoreboard implementation for tracking hits and misses
+ *
+ * @author Peli Orugbani
+ * @version created on 10/12/2025 11:30 PM
+ */
 public class Scoreboard implements ObserverData {
     private int coconutsHit = 0;
     private int coconutsMissed = 0;

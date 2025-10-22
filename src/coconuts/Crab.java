@@ -1,7 +1,6 @@
 package coconuts;
 
 import javafx.scene.image.Image;
-
 // Represents the object that shoots down coconuts but can be hit by coconuts. Killing the
 //   crab ends the game
 // This is a domain class; other than Image, do not introduce JavaFX or other GUI components here

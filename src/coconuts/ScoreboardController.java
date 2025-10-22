@@ -2,7 +2,14 @@ package coconuts;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-
+/**
+ * Course SWE2410-121
+ * Fall 2025-2026
+ * Class ScoreboardController Purpose: Scoreboard controller for updating scoreboard display
+ *
+ * @author Peli Orugbani
+ * @version created on 10/12/2025 11:30 PM
+ */
 public class ScoreboardController {
     @FXML
     public Label coconutsHitLabel;

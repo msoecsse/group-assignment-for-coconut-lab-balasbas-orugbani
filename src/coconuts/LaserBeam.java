@@ -1,7 +1,14 @@
 package coconuts;
 
 import javafx.scene.image.Image;
-
+/**
+ * Course SWE2410-121
+ * Fall 2025-2026
+ * Class Laser Purpose: Laser implementation of HittableIslandObject
+ *
+ * @author Peli Orugbani
+ * @version created on 10/09/2025 11:30 AM
+ */
 // Represents the beam of light moving from the crab to a coconut; can hit only falling objects
 // This is a domain class; do not introduce JavaFX or other GUI components here
 public class LaserBeam extends IslandObject {

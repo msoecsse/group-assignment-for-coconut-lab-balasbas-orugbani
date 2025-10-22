@@ -8,7 +8,14 @@ import javafx.scene.layout.Pane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-
+/**
+ * Course SWE2410-121
+ * Fall 2025-2026
+ * Class GameController Purpose: JavaFX Controller class for the game
+ *
+ * @author John Balasbas & Peli Orugbani
+ * @version created on 10/09/2025 11:30 AM
+ */
 // JavaFX Controller class for the game - generally, JavaFX elements (other than Image) should be here
 public class GameController {
 
